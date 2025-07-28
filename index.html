@@ -6,14 +6,20 @@
   <title>Para Ainara 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       background: #0d0d0d;
       font-family: 'Segoe UI', sans-serif;
-      height: 100%;
-      width: 100%;
+      position: relative;
+      touch-action: manipulation;
     }
 
     .frase {
@@ -27,7 +33,7 @@
     }
 
     .frase-principal {
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -66,6 +72,25 @@
       0% { transform: scale(1) translateY(0); opacity: 1; }
       100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
     }
+
+    /* Oculta todo si no es móvil */
+    @media (min-width: 768px) {
+      body::before {
+        content: "Este mensaje es exclusivo para celulares 💖";
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        text-align: center;
+        max-width: 90%;
+      }
+
+      .frase, .frase-principal {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -92,11 +117,11 @@
     span.textContent = frases[Math.floor(Math.random() * frases.length)];
 
     const screenWidth = window.innerWidth;
-    const fontSize = Math.random() * (screenWidth * 0.015) + (screenWidth * 0.03); // 3vw - 4.5vw
+    const fontSize = Math.random() * (screenWidth * 0.015) + (screenWidth * 0.03);
     span.style.left = Math.random() * screenWidth + "px";
     span.style.fontSize = fontSize + "px";
     span.style.color = `hsl(${Math.random() * 360}, 100%, 85%)`;
-    span.style.animationDuration = (Math.random() * 4 + 6) + "s"; // más lento (6 a 10s)
+    span.style.animationDuration = (Math.random() * 4 + 6) + "s";
     document.body.appendChild(span);
 
     setTimeout(() => span.remove(), 11000);
@@ -113,10 +138,7 @@
   }
 
   function explosionDeAmor(x, y) {
-    // Al tocar, crea corazones y frases nuevas
-    for (let i = 0; i < 3; i++) {
-      crearFrase();
-    }
+    for (let i = 0; i < 3; i++) crearFrase();
     for (let i = 0; i < 5; i++) {
       const offsetX = x + (Math.random() * 200 - 50);
       const offsetY = y + (Math.random() * 200 - 50);
@@ -124,19 +146,26 @@
     }
   }
 
-  // Lluvia continua
   setInterval(crearFrase, 150);
 
-  // Al tocar, más amor
-  document.addEventListener("click", e => {
-    explosionDeAmor(e.clientX, e.clientY);
-  });
-
+  document.addEventListener("click", e => explosionDeAmor(e.clientX, e.clientY));
   document.addEventListener("touchstart", e => {
     const touch = e.touches[0];
     explosionDeAmor(touch.clientX, touch.clientY);
   });
 </script>
+<audio id="musicaFondo" src="lovestory.mp3" preload="auto"></audio>
+<script>
+  const musica = document.getElementById("musicaFondo");
 
+  // Intenta reproducir al tocar
+  document.addEventListener("click", () => {
+    if (musica.paused) musica.play();
+  });
+
+  document.addEventListener("touchstart", () => {
+    if (musica.paused) musica.play();
+  });
+</script>
 </body>
-</html>
+</html
